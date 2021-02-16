@@ -10,14 +10,7 @@ const lockState = window.mobx.observable({
 })
 
 function changeDialValue (index, incrementBy) {
-  // This part is missing some code
-  // This function is automatically called when the user clicks on a chevron
-  // it will be called with a wheel index and an amount to change the value by
-  // for example, if a user clicks on the "up" arrow for wheel 0
-  // this will be called with arguments (0, 1) indicating we should raise the first dial's value by one
-  // for example, if the user clicked the "down" arrow for the last wheel
-  // this will be called with arguments (3, -1).
-
+  /* check if next val is within range, if not loop back around */
   temp = this.lockState.wheels[index]
   if (temp === 9 && incrementBy > 0) {
     temp = 0
@@ -26,23 +19,16 @@ function changeDialValue (index, incrementBy) {
   } else {
     temp += incrementBy
   }
-  this.lockState.wheels[index] = temp
+  this.lockState.wheels[index] = temp /* assign combo new value */
 
-  this.lockState.locked = check()
+  this.lockState.locked = check() /* check if lock is unlocked */
 
-  // to change the state of the lock, simply make a call like
-  // lockState.locked = false
-  // or lockState.wheels[1] = 2
-  // the lock will re-render itself when the value changes
   if (this.lockState.locked === false) {
-    window.redirect('ConleyPrice')
+    window.redirect('ConleyPrice') /* redirect to profile page if lock is unlocked */
   }
-  // When the lock is set to match the secretCombo
-  // call the redirect() function with your name
-  // eg: redirect('larry-lobster')
-  // the redirect function will only redirect if the lockState is unlocked
 }
 
+/* Funciton checks if lock combo is same as the secret combo, retur true if same else false */
 function check () {
   for (let i = 0; i < 4; i++) {
     if (this.lockState.wheels[i] !== SECRET_COMBO[i]) {
